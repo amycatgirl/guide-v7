@@ -1,0 +1,30 @@
+name: Request a page
+description: Request a page/guide about a new topic.
+title: "Request a page"
+labels: [page-request]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please fill out the fields carefully.
+  - type: input
+    attributes:
+      label: Content
+      description: What are you requesting a page/guide for?
+      placeholder: Making a musicbot
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: Topic
+      description: Which topic does this request fit in or should a new one be created?
+      placeholder: Create a new one.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Explain
+      description: If you want to explain your request some more or add something feel free to do it here.
+      placeholder: Yes I would like to add that...
+    validations:
+      required: false
