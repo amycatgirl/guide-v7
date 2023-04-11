@@ -1,0 +1,30 @@
+name: Create a translation
+description: Offer to create a translation for this project.
+title: "Create a translation"
+labels: [translation]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please fill out the fields carefully.
+  - type: input
+    attributes:
+      label: Language
+      description: In which language do you want to translate this project?
+      placeholder: Spanish
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: Skills
+      description: How good are you with this language?
+      placeholder: I'm a native speaker/fluent.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Experience
+      description: Do you have any experience translating projects?
+      placeholder: Yes I have, I have previously worked on...
+    validations:
+      required: true
