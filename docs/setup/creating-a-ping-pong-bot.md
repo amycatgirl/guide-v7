@@ -68,9 +68,9 @@ const { token, prefix } = require('./config.json');
 let client = new Client();
 
 // Once your client is ready, this code will be executed (only once)
-client.on("ready", async () =>
+client.on("ready", async () => {
     console.info(`Logged in as ${client.user.username}!`); // This returns "Logged in as *Your bot's name*!" in the console
-);
+});
 
 // Make the client (bot) send the "Pong!" message after you send a message with the content "!ping" into chat.
 client.on("message", async (message) => {
