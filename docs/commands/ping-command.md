@@ -12,10 +12,11 @@ First we have to add a new command, you can use the base we provided in ["Add si
 
 Now we have to see how long our bot takes to send a message (it's ping).
 
-We do this by checking the time between when the command was sent (`message.createdAt`) and when our bot responded to it (`Date.now()`).
+We do this by checking the time between when the command was executed (`let now = Date.now();`) and when our bot fully responded to it by editing the message (`Date.now()`).
 
 ```js
-Date.now() - message.createdAt
+let now = Date.now();
+Date.now() - now
 ```
 
 ### Getting the APIs ping
@@ -37,7 +38,10 @@ The end result should look something like this:
 ```js
 client.on('message', async (message) => {
     if (message.content === prefix + 'ping') {
-        message.channel.sendMessage(`The bots latency is: ${Date.now() - message.createdAt}ms\nThe APIs Latency is: ${Math.round(client.websocket.ping)}ms`);
+        let now = Date.now();
+        message.channel.sendMessage(`Pinging...`).then((msg) => {
+            msg.edit({ content: `The bots latency is: ${Date.now() - now}ms\nThe APIs Latency is: ${Math.round(client.websocket.ping)}ms`})
+        });
     }
 });
 ```
