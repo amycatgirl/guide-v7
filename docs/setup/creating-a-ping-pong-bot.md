@@ -25,15 +25,10 @@ With the `config.json` file open, paste the following:
   
 You can put any value in `"prefix"`, for this example, we will use `"!"` as our prefix.
 
-### Creating a bot
+### Obtaining your bot's token
 
-Using [Revolt's web app](https://app.revolt.chat/) or the desktop client, log onto your account and go to
-[settings](https://app.revolt.chat) and open the ["My bots"](https://app.revolt.chat/settings) tab.
-  
-![My Bots tab](https://i.imgur.com/yzWKcfo.png)
-
-Then click the "Create a bot" button. A modal will prompt you to choose an username for the bot (You can change
-it later if you want).
+If you haven't already, create a bot account by following the
+[Creating a Bot application](/docs/introduction/creating-a-bot-application) page.
 
 After the bot is created, click the "Token" button below your bot's username; This will copy your bot's token to
 your clipboard.
