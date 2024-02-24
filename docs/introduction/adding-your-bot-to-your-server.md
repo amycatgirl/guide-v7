@@ -2,32 +2,30 @@
 sidebar_position: 3
 ---
   
-#  Adding your bot to your server
+# Adding your bot to your server
 
-### Getting the bots invite link
+This page assumes you have created a bot account already, if you haven't done so, read the ["Creating a Bot application"](/docs/introduction/creating-a-bot-application) page
+
+### Getting the bot's invite link
   
-Open a Revolt application of your choice or use [the web app on the Revolt website](https://app.revolt.chat/).
+Go to [Revolt's web app](https://app.revolt.chat), log into your account and head to settings then open the "My Bots" tab as shown in the screenshot below.
 
-Login and go into your [settings](https://app.revolt.chat/settings) (you can find them in the bottom left corner).
-
-Open the ["My Bots"](https://app.revolt.chat/settings/bots) tab.
-  
 ![My Bots tab](https://i.imgur.com/yzWKcfo.png)
-  
-Now click on **"Copy Invite Link"** to copy your bots invite link to your clipboard.
+
+Then search your bot's username on the list and click on **"Copy Invite Link"**. This action will copy your bot's unique invite link to your system's clipboard.
   
 ![Copy Invite Link](https://i.imgur.com/l0bpzlL.png)
   
 ### Adding the bot to a server or group
 
-Paste the link into your browser.
+Paste the link into your browser and click it. This will bring you into the bot invite screen.
 
-Then click on **"Select a server"** and select a server of your choice.
-  
+It consists of the bot's username, description and two dropdowns to choose where to invite the bot to.
+
+If you are inviting your bot into a group, use the "Add to Group" dropdown, if you are inviting it into a server, use the "Add to Server" dropdown.
+
 ![Select a server](https://i.imgur.com/Pjev3vz.png)
   
 Now click the *"Add"* button on the right side.
 
-*The same thing works for **"Select a group"**.*
-  
-You have now added your own bot to a server/group of your choice!
+Shortly after clicking add, you should see your bot join the server you've selected!
