@@ -5,27 +5,30 @@ sidebar_position: 2
 #  Creating a bot application
   
 ### Creating the bot
-Open a Revolt application of your choice or use [the web app on the Revolt website](https://app.revolt.chat/).
+To create a bot, go to [Revolt's web app](https://app.revolt.chat) or use the desktop client, log into your account and head to settings.
 
-Login and go into your [settings](https://app.revolt.chat/settings) (you can find them in the bottom left corner).
-
-Open the ["My Bots"](https://app.revolt.chat/settings/bots) tab.
+On the left sidebar, you should see a tab that says "My Bots"
   
 ![My Bots tab](https://i.imgur.com/yzWKcfo.png)
   
-Then click on **"Create a bot"** (at the top of the screen).
+Go there, then click on the **"Create a bot"** button.
   
 ![Create a bot](https://i.imgur.com/dhjRZk7.png)
   
-Enter a username for your bot.
-  
-*Keep in mind usernames of Revolt bots are similar to the ones used by regular users so you are either blocking a username or if you are unlucky your desired bot username is already taken.*
-  
+A modal will prompt you to enter a username for your bot. 
+
 ![Username](https://i.imgur.com/YPRXw1Q.png)
   
 After filling in the username click on **"Create"**.
+
+:::note
+
+You are able to change the username later.
+
+::: 
   
-Hurray! You have now created your very own bot!
+Hurray! You have now created your very own bot account!
+
 ### Customizing the bot
   
 You can now find your bot below, click on **"Edit"** to customize it.
