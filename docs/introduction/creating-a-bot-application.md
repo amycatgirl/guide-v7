@@ -31,18 +31,21 @@ Hurray! You have now created your very own bot account!
 
 ### Customizing the bot
   
-You can now find your bot below, click on **"Edit"** to customize it.
+You can now find your newly created bot below, click the **"Edit"** button to customize its profile.
   
 ![Edit](https://i.imgur.com/MavBhVy.png)
   
-You can now edit the profilepicture and name of your bot.
+After clicking the button, you'll now find options to edit multiple parts of the bot, such as it's profile picture, it's username, whether the bot can be invited by others and it's profile background and bio.
 
-Expand the "> Bot Profile" tab in your bots profile.
+To edit the background and the bot's bio, click on the "BOT PROFILE" dropdown.
   
 ![Bot profile tab](https://i.imgur.com/Dbnosyj.png)
   
-Now you can see and edit even more aspects of your bot like giving it a custom background and description.
   
 ![Full bot profile](https://i.imgur.com/HnNkEGl.png)
-  
-**Do not forget to tick the "Public Bot" box if you want other users to be able to invite your bot to their server.**
+
+:::info
+
+Don't forget to tick the "Public bot" box. Otherwise, users will not be able to add your bot to groups and servers through an invite link.
+
+:::
