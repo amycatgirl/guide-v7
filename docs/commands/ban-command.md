@@ -4,9 +4,7 @@ sidebar_position: 1
   
 # Ban command
 
-In this guide we will show you how to add a ban command to your bot and what you need to do before doing so.
-
-*Command example in chat:*
+This page will guide you on making a basic ban command. Here is how it will look like after you finish the tutorial:
 
 ```
 User1: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
@@ -15,10 +13,11 @@ ExampleBot: @User1 has been banned by @User2 for "Spam".
 ```
 
 ### Adding a command with arguments
+[//]: # (TODO: Create command handler page because this is atrocious)
 
-First you have to write a new command. Instead of checking if the message content is equal to the ban command we check if the message content starts with the ban command since the user has to add  arguments behind the command.
+First you have to make a new command. Instead of checking if the message content is equal to the ban command we check if the message content starts with the ban command since the user has to add arguments such as the ID of the user and the reason behind the ban.
 
-We do this by using the `.startsWith()` function.
+We do this by using the [`String.startsWith()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/startsWith) function.
 
 ```js
 client.on("message", async (message) => {
@@ -29,43 +28,53 @@ client.on("message", async (message) => {
 
 ### Adding checks
 
-A common problem we have to avoid is system messages, which return a undefined `message.content`. Since we use the `.startsWith()` function the code will break if we feed it with something that is not a string. That is why we have to check if the `message.content` type is `string` and if that is the case we have to "stop" the command.
+A common problem is that we have to avoid system messages, as they do not contain a proper message content. Since we use the `String.startsWith()` function, the code will break if we feed it with something that is not a string, the code will throw and exception and halt execution. That is why we have to check if `message.content` is a `string` before it tries to access the `String.startsWith()` function.
 
-We do this by including a check for the variable type before we check if the message starts with the ban command:
+We do this by checking whether `message.content` is neither `null` or `undefined`, using a [optional chaining operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining)
 
 ```js
-if (typeof message.content != "string") return; // Checks if message.content type is string
+//...
+    if (message.content?.startsWith(prefix + "ban")) {
+    }
+//...
 ```
 
-Now we have to check if the user that sent the command has the permission to ban members.
+Now we have to check if the user that sent the command has the permission to ban members. As we don't want any malicious users misusing the ban command.
 
-We do this by checking the permission of the message author.
+We do this by checking the `BanMembers` permission against the message's author.
 
 ```js
-if (message.member.hasPermission(message.channel.server, "BanMembers") === false) {
-   return message.channel.sendMessage("You don't have the permission to ban.");
+if (!message.member.hasPermission(message.channel.server, "BanMembers")) {
+   return message.channel.sendMessage("You don't have the permission to ban members.");
 }
 ```
 
-The last check we have to add is if the user we want to ban is actually bannable, we do this by first fetching the user and then checking the bannable attribute.
-
-The way the user provides and the bot gets the "target" (the user we want to ban) is relying on the arguments we mentioned above.
-
-The user has to write the command and then after a space add the "target"'s ID. (For an example see the beginning of this page.)
-
-We get this ID argument by using the `.split()` function to select the the text behind the first space.
+Then we need to check if the bot has the permission to ban members as well.
 
 ```js
-let target = message.channel.server.fetchMember(message.content.split(' ')[1]);
+if (!message.server.havePermission("BanMembers")) {
+    return message.channel.sendMessage("I don't have the permission to perform this action");
+}
 ```
 
-Now that we have fetched the user we will check the bannable attribute and see if it's true or not true.
+Now, we need to check if the bot can ban the user. The first argument we've provided to the command is the ID. So we'll use that as our target.
+
+To get the user in the form of a server member, we use the `server.fetchMember()` function, which takes one parameter, a user id. We use `String.split()` to split our message's contents into an array by a separator, in this case, we use a space as our separator.
+
+We get the member by `await`ing this function, since it returns a `Promise`. Read [this](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises) article from MDN to learn more about `async`, `await` and Promises.
 
 ```js
-if ((await target).bannable !== true) {
-   message.channel.sendMessage("I can't ban this user.");
-}
-if ((await target).bannable === true) {
+const target = await message.channel.server.fetchMember(message.content.split(' ')[1]);
+```
+
+Now that we have fetched the member, we will check if we can actually ban this user, since roles that have a superior ranking to our bot can't be banned. We'll compare our ranking with the one from our bot.
+
+```js
+if (
+    !message.server.havePermission("BanMembers") ||
+    (target.ranking < message.server.member.ranking)
+) {
+    return message.channel.sendMessage("I don't have the permission to perform this action");
 }
 ```
 
@@ -73,17 +82,17 @@ The command with all checks should look something like this.
 
 ```js
 client.on("message", async (message) => {
-    if (typeof message.content != "string") return;
-    if (message.content.startsWith(prefix + "ban")) {
-       if (message.member.hasPermission(message.channel.server, "BanMembers") === false) {
-          return message.channel.sendMessage("You don't have the permission to ban.");
-       }
-       let target = message.channel.server.fetchMember(message.content.split(' ')[1]);
-       if ((await target).bannable !== true) {
-          message.channel.sendMessage("I can't ban this user.");
-       }
-       if ((await target).bannable === true) {
-       }
+    if (message.content?.startsWith(prefix + "ban")) {
+        if (!message.member.hasPermission(message.channel.server, "BanMembers")) {
+            return message.channel.sendMessage("You don't have the permission to ban.");
+        }
+        const target = await message.channel.server.fetchMember(message.content.split(' ')[1]);
+        if (
+            !message.server.havePermission("BanMembers") ||
+            (target.ranking < message.server.member.ranking)
+        ) {
+            return message.channel.sendMessage("I don't have the permission to perform this action");
+        }
     }
 });
 ```
