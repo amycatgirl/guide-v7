@@ -4,36 +4,36 @@ sidebar_position: 2
   
 # Reacting to messages
 
-Making your bot react to a message is a bit more complicated than replying but that will be no problem for us.
+Reacting to messages is as simple as using the `message.react()` function.
 
-Simply add a new command, you can use the base we provided in ["Add simple commands"](https://revolt.guide/docs/setup/add-simple-commands).
+The function takes one parameter, which is the emoji to react the message with.
 
-Now change `message.channel.sendMessage` to `message.react`.
+## Reacting with a custom emoji
 
-There are two kinds of emojis that you can use to react, custom emojis and standard emojis.
-
-If you want to react with a custom emoji simply fill in the ID of your emoji like this:
+To react with a custom emoji, you pass in the emoji's id as a string like in the example below:
 
 ```js
-message.react("01G7J9RTHKEPJM8DM19TX35M8N");   
+client.on("messageCreate", (message) => {
+    // ...
+    message.react("01HAJG8E9A1B7TQ7XQD0FMG49S")
+    // ...
+}
 ```
 
-To get the ID of a custom emoji just select it in the emoji picker and before sending it and copy the ID between the `:`'s.
+To get an emoji's id, you copy the [ULID](https://github.com/ulid/spec) between the colons (`:`). Alternatively, you can search emojis using the [`server.fetchEmoji()`](https://revolt.js.org/classes/Server.html#fetchEmojis) asynchronous function.
 
-If you want to react with a standard emoji you will have to encode it first using the `encodeURIComponent()` function:
+## Reacting with a built-in emoji
+
+Unlike custom emojis, built-in emojis use their unicode representation as a URI encoded string, for example, a heart (❤️) is representated as `"%E2%9D%A4%EF%B8%8F"`.
+
+To do so, use the `EncodeURIComponent()` function:
 
 ```js
-message.react(encodeURIComponent("❤️"));    
+client.on("messageCreate", (message) => {
+    // ...
+    message.react(EncodeURIComponent('❤️'))
+    // ...
+}
 ```
 
-The finished code should look something like this:
-
-```js
-client.on("message", async (message) => {
-    if (message.content === prefix + "react") {
-        message.react(encodeURIComponent("❤️"));    
-    }
-});
-```
-
-Now just add this command to your bot like we did in ["Add simple commands"](https://revolt.guide/docs/setup/add-simple-commands).
+This will react the message with a heart emoji without the need of making a separate emoji.
