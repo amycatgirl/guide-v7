@@ -6,39 +6,40 @@ sidebar_position: 1
   
 ### Creating the basic files
   
-Navigate to your bots folder.
+1. Navigate to your bots folder.
 
-Create a file called: `config.json`
+2. Create a file called: `config.json`, that is where the bot's configuration will live. You can add and remove values as needed.
 
-Create a file called: `index.js`
-  
+3. Create a file called: `index.js`, here is where the bot's code lives.
+
 ### Setting up the config.json file
   
-Open the `config.json` file.
-  
-Now paste in the following text:
+With the `config.json` file open, paste the following:
   
 ```json
 {
 	"token": "Your-token-goes-here",
-	"prefix": "Your-prefix-goes-here"
+	"prefix": "!"
 }
 ```
   
-For `"prefix"` you can put in anything you like.
-  
-Now open a Revolt application of your choice or use [the web app on the Revolt website](https://app.revolt.chat/).
+You can put any value in `"prefix"`, for this example, we will use `"!"` as our prefix.
 
-Login and go into your [settings](https://app.revolt.chat/settings) (you can find them in the bottom left corner).
+### Creating a bot
 
-Open the ["My Bots"](https://app.revolt.chat/settings/bots) tab.
+Using [Revolt's web app](https://app.revolt.chat/) or the desktop client, log onto your account and go to
+[settings](https://app.revolt.chat) and open the ["My bots"](https://app.revolt.chat/settings) tab.
   
 ![My Bots tab](https://i.imgur.com/yzWKcfo.png)
-  
-Click on **"Reveal"** to see the token of your bot.
-  
-Now copy and paste this code into the `package.json` file.
-  
+
+Then click the "Create a bot" button. A modal will prompt you to choose an username for the bot (You can change
+it later if you want).
+
+After the bot is created, click the "Token" button below your bot's username; This will copy your bot's token to
+your clipboard.
+
+Finally, go to your `package.json` file and paste your token in the quotes after `"token"`.
+
 The end result should look something like this:
 
 ```json
@@ -48,16 +49,22 @@ The end result should look something like this:
 }
 ``` 
 
-*Your token will look different and will be longer!*
-  
+:::note
+
+Your token will look different and will be longer!
+
+:::
+
 Now save the changes you made to the `config.json` file.
   
 ### Setting up the index.js file
   
-Open the `index.js` file in a code editor of your choice.
+Open the `index.js` file in a code editor of your choice. If you don't know what to use, we recommend using
+Microsoft's [Visual Studio Code](https://code.visualstudio.com).
 
 Now write the following code:
-  
+[//]: # (TODO: Tell user to switch from CommonJS to ES6)
+
 ```js
 // Import the "Client" class from the revolt.js package
 const { Client } = require("revolt.js");
@@ -73,7 +80,7 @@ client.on("ready", async () => {
 });
 
 // Make the client (bot) send the "Pong!" message after you send a message with the content "!ping" into chat.
-client.on("message", async (message) => {
+client.on("messageCreate", async (message) => {
     if (message.content === prefix + "ping") {
         message.channel.sendMessage("Pong!");
     }
@@ -87,7 +94,7 @@ Save the changes you made to the `index.js` file.
 
 ### Run your bot
 
-Open your terminal and navigate to your bots folder.
+Open your terminal and navigate to your bot's folder.
 
 Type in the following command and press **Enter** to run your bot.
 
