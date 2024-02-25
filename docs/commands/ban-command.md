@@ -9,7 +9,8 @@ This page will guide you on making a basic ban command. Here is how it will look
 ```
 User1: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 User2 (Mod): !ban 01FQT99TE7G09HEJZA3EBYV96S Spam
-ExampleBot: @User1 has been banned by @User2 for "Spam".
+ExampleBot: @User1 has been banned by @User2
+Reason: Spam
 ```
 
 ### Adding a command with arguments
@@ -97,59 +98,58 @@ client.on("message", async (message) => {
 });
 ```
 
-### Adding the ban function and correlating message
+Enough checking, let's actually ban the user!
 
-Lastly we simply have to add the actual ban function and add the second argument (the text behind the second space) as reason.
+### Banning users
 
-And we add a message to show the ban was successful.
+To ban someone in a server, we use the `member.ban()` function. It's as simple as that.
+
+But since we want to also attach a reason, we need to also pass in an object with the `reason` key and a value as the reason like the example below.
 
 ```js
-await message.channel.server.banUser(message.content.split(' ')[1], { reason: message.content.split(' ')[2]})
-message.channel.sendMessage(`<@${message.content.split(' ')[1]}> has been banned by <@${message.author_id}> for "${message.content.split(' ')[2]}"`);
+await member.ban({
+    reason: message.content.split(' ')[2] ?? null
+})
+```
+:::info
+
+We use `??` to check whether the second argument was passed or not. To learn more about this operand, see [MDN's article on the Nullish coalescing operator.](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Nullish_coalescing)
+
+:::
+
+
+But just banning the member isn't enough, we need to tell the user that the ban was successful. We could use an embed, which gives more customization options and generally looks better, but for the purposes of this tutorial, we will use a simple text message.
+
+```js
+message.channel.sendMessage(`<@${message.content.split(' ')[1]}> has been banned by <@${message.author_id}>\nReason: "${message.content.split(' ')[2] ?? "None provided."}"`);
 ```
 
-### The complete ban command and clean version
+### Complete command
 
-The complete ban command should look something like this:
-
-```js
-client.on("message", async (message) => {
-    if (typeof message.content != "string") return;
-    if (message.content.startsWith(prefix + "ban")) {
-        if (message.member.hasPermission(message.channel.server, "BanMembers") === false) {
-            return message.channel.sendMessage("You don't have the permission to ban.");
-        }
-        let target = message.channel.server.fetchMember(message.content.split(' ')[1]);
-        if ((await target).bannable !== true) {
-            message.channel.sendMessage("I can't ban this user.");
-        }
-        if ((await target).bannable === true) {
-            await message.channel.server.banUser(message.content.split(' ')[1], { reason: message.content.split(' ')[2] })
-            message.channel.sendMessage(`<@${message.content.split(' ')[1]}> has been banned by <@${message.author_id}> for "${message.content.split(' ')[2]}"`);
-        }
-    }
-});
-```
-
-The version with the clean code should look something like this:
+The end result should look something like this:
 
 ```js
-client.on("message", async (message) => {
-    if (typeof message.content != "string") return;
-    if (message.content.startsWith(prefix + "ban")) {
-        if (message.member.hasPermission(message.channel.server, "BanMembers") === false) {
+client.on("messageCreate", async (message) => {
+    if (message.content?.startsWith(prefix + "ban")) {
+        if (!message.member.hasPermission(message.channel.server, "BanMembers")) {
             return message.channel.sendMessage("You don't have the permission to ban.");
         }
-        let target_id = message.content.split(' ')[1];
-        let reason = message.content.split(' ')[2];
-        let target = message.channel.server.fetchMember(target_id);
-        if ((await target).bannable !== true) {
-            message.channel.sendMessage("I can't ban this user.");
+        const target = await message.channel.server.fetchMember(message.content.split(' ')[1]);
+        if (
+            !message.server.havePermission("BanMembers") ||
+            (target.ranking < message.server.member.ranking)
+        ) {
+            return message.channel.sendMessage("I don't have the permission to perform this action");
         }
-        if ((await target).bannable === true) {
-            await message.channel.server.banUser(target_id, { reason: reason })
-            message.channel.sendMessage(`<@${target_id}> has been banned by <@${message.author_id}> for "${reason}"`);
-        }
+        await member.ban({
+            reason: message.content.split(' ')[2] ?? null
+        })
+
+        message.channel.sendMessage(
+            `<@${message.content.split(' ')[1]}> has been banned by <@${message.author_id}>\nReason: "${
+                message.content.split(' ')[2] ?? "None provided."
+            }"`
+        );
     }
 });
 ```
